@@ -1,5 +1,6 @@
 <?php
-include 'array_challenge.php';
+//include 'array_challenge.php';
+include 'loops_challenges.php'
 
 ?>
 
