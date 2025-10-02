@@ -1,7 +1,7 @@
 <?php
 //include 'array_challenge.php';
-include 'loops_challenges.php'
-
+//include 'loops_challenges.php'
+include 'FizzBuzz_challenge.php'
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +15,9 @@ include 'loops_challenges.php'
 
 <body style='background-color: rgba(33, 33, 34, 1); color: white; font-family: Arial, Helvetica, sans-serif;'>
     <p>
-        <?php echo $output; ?>
+        <strong>
+            <?php echo $output; ?>
+        </strong>
     </p>
 </body>
 
