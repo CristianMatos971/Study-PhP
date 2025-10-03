@@ -1,7 +1,10 @@
 <?php
-//include 'array_challenge.php';
-//include 'loops_challenges.php'
-include 'FizzBuzz_challenge.php'
+//include 'practice_challenges/array_challenge.php';
+//include 'practice_challenges/loops_challenges.php';
+//include 'practice_challenges/FizzBuzz_challenge.php';
+include 'practice_challenges/names_challenge.php';
+
+//$output = null;
 ?>
 
 <!DOCTYPE html>
