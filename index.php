@@ -5,7 +5,8 @@
 //include 'practice_challenges/names_challenge.php';
 //include 'practice_challenges/job_listings_HelpFunctions.php';
 //include 'practice_challenges/Fahrenheit_to_Celsius.php';
-include 'practice_challenges/find_longest_word.php';
+//include 'practice_challenges/find_longest_word.php';
+include 'practice_challenges/oop_challenges.php';
 
 //$output = null;
 ?>
