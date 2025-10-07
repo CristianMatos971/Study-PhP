@@ -1,0 +1,96 @@
+:root {
+    --bg: #e2e2e2;
+    --card: #ffffff;
+    --accent: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    --gap: 16px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: var(--bg);
+    color: var(--accent);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding: 24px;
+}
+
+header {
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    letter-spacing: -0.2px;
+}
+
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--gap);
+}
+
+.post {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 120px;
+}
+
+.post .title {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--accent);
+}
+
+.post .body {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.4;
+    flex: 1;
+}
+
+@media (max-width: 420px) {
+    body {
+        padding: 12px;
+    }
+
+    h1 {
+        font-size: 1.25rem;
+    }
+}
+
+.button {
+    margin: 10px;
+}
+
+.button button {
+    height: 2em;
+    width: 5em;
+    background-color: rgb(102, 135, 241);
+    color: rgb(231, 231, 231);
+    font-weight: bold;
+}
