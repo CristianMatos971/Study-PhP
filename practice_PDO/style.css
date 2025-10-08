@@ -94,3 +94,21 @@ main {
     color: rgb(231, 231, 231);
     font-weight: bold;
 }
+
+.delete-button button {
+    height: 2em;
+    width: 5em;
+    background-color: rgb(250, 53, 53);
+    color: rgb(231, 231, 231);
+    font-weight: bold;
+    margin: 10px;
+}
+
+.edit-button button {
+    height: 2em;
+    width: 5em;
+    background-color: rgb(49, 99, 61);
+    color: rgb(231, 231, 231);
+    font-weight: bold;
+    margin: 10px;
+}

@@ -26,10 +26,15 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <main>
         <section class="posts" id="posts">
             <?php foreach ($results as $post): ?>
+
                 <div class="post">
-                    <div class="title"><?= $post['title'] ?></div>
+                    <a href="post.php?id=<?= $post['id'] ?>">
+                        <div class="title"> <?= $post['title'] ?> </div>
+                    </a>
+
                     <div class="body"><?= $post['body'] ?></div>
                 </div>
+
             <?php endforeach; ?>
         </section>
 

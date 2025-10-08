@@ -34,7 +34,7 @@ if ($isSubmitted && isset($_POST['submit'])) {
 
 <body>
     <header>
-        <h1>Study PDO Blog</h1>
+        <h1>Study PDO Blog - Create Post</h1>
     </header>
     <main>
         <form method="post">
