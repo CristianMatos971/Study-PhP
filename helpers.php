@@ -22,6 +22,7 @@ function loadView($name)
     if (file_exists($viewPath)) {
         require "$viewPath";
     } else {
+        echo $viewPath . '</br>';
         echo "The view $name was not found!";
     }
 }
@@ -40,4 +41,19 @@ function loadPartial($name)
     } else {
         echo "The view $name was not found!";
     }
+}
+
+
+/**
+ * Inspecionar uma váriavel ou objeto e para a interpretação do código
+ * 
+ * @param mixed $value
+ * @return void
+ */
+function inspectAndDie($value)
+{
+    echo '<pre>';
+    var_dump($value);
+    echo '</pre>';
+    die;
 }
