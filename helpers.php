@@ -43,9 +43,21 @@ function loadPartial($name)
     }
 }
 
-
 /**
  * Inspecionar uma váriavel ou objeto e para a interpretação do código
+ * 
+ * @param mixed $value
+ * @return void
+ */
+function inspect($value)
+{
+    echo '<pre>';
+    var_dump($value);
+    echo '</pre>';
+}
+
+/**
+ * Inspecionar uma váriavel ou objeto e para a interpretação do código e parar o script
  * 
  * @param mixed $value
  * @return void
