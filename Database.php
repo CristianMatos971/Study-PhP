@@ -31,10 +31,16 @@ class Database
         }
     }
 
-    public function query($sql)
+    public function query($sql, $params = [])
     {
         try {
             $stmt = $this->conn->prepare($sql);
+
+            //conectar os parametros à preparedStatements nomeados
+            foreach ($params as $param => $value) {
+                $stmt->bindParam($param, $value);
+            }
+
             $stmt->execute();
             return $stmt;
         } catch (\Throwable $e) {
