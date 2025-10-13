@@ -16,10 +16,12 @@ function basePath($path = '')
  * @param string $name
  * @return void
  */
-function loadView($name)
+function loadView($name, $data = [])
 {
     $viewPath = basePath("views/{$name}.view.php");
     if (file_exists($viewPath)) {
+        //inspectAndDie($data);
+        extract($data);
         require "$viewPath";
     } else {
         echo $viewPath . '</br>';
@@ -68,4 +70,15 @@ function inspectAndDie($value)
     var_dump($value);
     echo '</pre>';
     die;
+}
+
+/**
+ * Formatar salário com casas decimais e milhares agrupados.
+ *
+ * @param [number] $salary
+ * @return void
+ */
+function formatSalary($salary)
+{
+    return '$' . number_format(floatval($salary));
 }
