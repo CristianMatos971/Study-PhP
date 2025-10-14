@@ -1,0 +1,16 @@
+{
+    "name": "cristianmatos971/study-php",
+    "description": "Job listing application",
+    "authors": [
+        {
+            "name": "Cristian Matos",
+            "email": "cristianernandes971@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "Framework/",
+            "App\\": "App/"
+        }
+    }
+}

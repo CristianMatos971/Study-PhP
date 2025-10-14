@@ -1,5 +1,12 @@
 <?php
 
+namespace Framework;
+
+use Exception;
+use PDO;
+use PDOException;
+use Throwable;
+
 class Database
 {
     public $conn;
@@ -43,7 +50,7 @@ class Database
 
             $stmt->execute();
             return $stmt;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new Exception("Database connection failed: {$e->getMessage()}");
         }
     }
