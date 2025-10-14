@@ -2,6 +2,8 @@
 
 namespace Framework;
 
+use App\controllers\ErrorController;
+
 class Router
 {
     protected $routes = [];
@@ -11,15 +13,18 @@ class Router
      *
      * @param [string] $method
      * @param [string] $uri
-     * @param [Controller] $controller
+     * @param [string] $action
      * @return void
      */
-    function registerRoutes($method, $uri, $controller)
+    function registerRoute($method, $uri, $action)
     {
+        list($controller, $controllerMethod) = explode('@', $action);
+
         $this->routes[] = [
             'method' => $method,
             'uri' => $uri,
-            'controller' => $controller
+            'controller' => $controller,
+            'controllerMethod' => $controllerMethod
         ];
     }
 
@@ -32,7 +37,7 @@ class Router
      */
     function get($uri, $controller)
     {
-        $this->registerRoutes('GET', $uri, $controller);
+        $this->registerRoute('GET', $uri, $controller);
     }
 
     /**
@@ -44,7 +49,7 @@ class Router
      */
     function post($uri, $controller)
     {
-        $this->registerRoutes('POST', $uri, $controller);
+        $this->registerRoute('POST', $uri, $controller);
     }
 
     /**
@@ -56,7 +61,7 @@ class Router
      */
     function put($uri, $controller)
     {
-        $this->registerRoutes('PUT', $uri, $controller);
+        $this->registerRoute('PUT', $uri, $controller);
     }
 
     /**
@@ -68,30 +73,22 @@ class Router
      */
     function delete($uri, $controller)
     {
-        $this->registerRoutes('DELETE', $uri, $controller);
+        $this->registerRoute('DELETE', $uri, $controller);
     }
 
-    /**
-     * Carregar a página de um erro especifico a depender do código do erro
-     *
-     * @param integer $httpCode
-     * @return void
-     */
-    function error($httpCode = 404)
-    {
-        http_response_code($httpCode = 404);
-        loadView("error/$httpCode");
-        exit;
-    }
 
     function route($uri, $method)
     {
         foreach ($this->routes as $route) {
             if ($route['uri'] === $uri && $route['method'] === $method) {
-                require basePath('App/' . $route['controller']);
+                $controller = '\\App\\Controllers\\' . $route['controller'];
+                $controllerMethod = $route['controllerMethod'];
+
+                $controllerInstance = new $controller();
+                $controllerInstance->$controllerMethod();
                 return;
             }
         }
-        $this->error();
+        ErrorController::notFound();
     }
 }
