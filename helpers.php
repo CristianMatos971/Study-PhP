@@ -82,3 +82,8 @@ function formatSalary($salary)
 {
     return '$' . number_format(floatval($salary));
 }
+
+function sanitize($dirty)
+{
+    return filter_var($dirty, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+}

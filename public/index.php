@@ -4,7 +4,7 @@ require '../helpers.php';
 
 use Framework\Router;
 
-/* 
+/* autoload manual comentado por que o projeto foi posteriormente configurado com composer para usar um autoloader já predefinido com composer install.
 spl_autoload_register(function ($class) {
     $path = basePath('Framework/' . $class . '.php');
     if (file_exists($path)) require $path;

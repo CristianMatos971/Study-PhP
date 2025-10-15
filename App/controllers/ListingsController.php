@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use Framework\Database;
+use Framework\Validation;
+
 
 class ListingsController
 {
@@ -55,5 +57,33 @@ class ListingsController
         }
 
         loadView('listings/show', ['listing' => $listing]);
+    }
+
+
+    public function store()
+    {
+        $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
+        $newListingData = array_intersect_key($_POST, array_flip($allowedFields));
+        //inspectAndDie($newListingData);
+        $newListingData['user_id'] = 1;
+        $newListingData = array_map('sanitize', $newListingData);
+
+        $requiredFields = ['title', 'description', 'city', 'state', 'email'];
+
+        $errors = [];
+
+
+        foreach ($requiredFields as $field) {
+            if (empty($newListingData[$field]) || Validation::string($newListingData[$field])) {
+                $errors[$field] = ucfirst($field) . ' is required';
+            }
+        }
+
+        if (!empty($errors)) {
+            //recarregar a página com erros
+            loadView('listings/create', ['errors' => $errors, 'listing' => $newListingData]);
+        } else {
+            //enviar os dados para slvar no banco.
+        }
     }
 }
