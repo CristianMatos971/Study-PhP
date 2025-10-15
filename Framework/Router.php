@@ -77,18 +77,49 @@ class Router
     }
 
 
-    function route($uri, $method)
+    function route($uri)
     {
-        foreach ($this->routes as $route) {
-            if ($route['uri'] === $uri && $route['method'] === $method) {
-                $controller = '\\App\\Controllers\\' . $route['controller'];
-                $controllerMethod = $route['controllerMethod'];
+        $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-                $controllerInstance = new $controller();
-                $controllerInstance->$controllerMethod();
-                return;
+        foreach ($this->routes as $route) {
+            $uriSegments = explode('/', trim($uri, '/'));
+
+            $routeSegments = explode('/', trim($route['uri'], '/'));
+
+            $match = true;
+
+            if (count($uriSegments) === count($routeSegments) && strtoupper($requestMethod) === $route['method']) {
+                $params = [];
+                $match = true;
+                for ($i = 0; $i < count($uriSegments); $i++) {
+                    //Se as uris não são compatíveis e não há parametro '/'
+                    if ($uriSegments[$i] !== $routeSegments[$i] && !preg_match('/\{(.+?)\}/', $routeSegments[$i])) {
+                        $match = false;
+                        /* inspect($uriSegments);
+                        echo '</br>----------------------------</br>';
+                        inspect($routeSegments); */
+                        break;
+                    }
+
+                    if (preg_match('/\{(.+?)\}/', $routeSegments[$i], $matches)) {
+                        $params[$matches[1]] = $uriSegments[$i];
+                        /* inspectAndDie($params); */
+                    }
+                }
+
+                // Se, após verificar todos os segmentos, a rota ainda for válida...
+                if ($match) {
+                    // Chame o controller e o método
+                    $controller = 'App\\Controllers\\' . $route['controller'];
+                    $controllerMethod = $route['controllerMethod'];
+
+                    $controllerInstance = new $controller();
+                    $controllerInstance->$controllerMethod($params); // Passe os parâmetros
+
+                    // Pare o roteador para não verificar outras rotas
+                    return;
+                }
             }
         }
-        ErrorController::notFound();
     }
 }
