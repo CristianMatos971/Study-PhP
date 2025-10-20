@@ -23,7 +23,7 @@ class ListingsController
      */
     public function index()
     {
-        $listings = $this->db->query('SELECT * FROM listings Limit 6')->fetchAll();
+        $listings = $this->db->query('SELECT * FROM listings')->fetchAll();
         loadView('listings/index', $listings);
     }
 
@@ -84,6 +84,30 @@ class ListingsController
             loadView('listings/create', ['errors' => $errors, 'listing' => $newListingData]);
         } else {
             //enviar os dados para slvar no banco.
+            $fields = [];
+
+            foreach ($newListingData as $field => $value) {
+                $fields[] = $field;
+            }
+
+            $fields = implode(', ', $fields);
+
+            $values = [];
+
+            foreach ($newListingData as $field => $value) {
+                if ($value === '') {
+                    $newListingData[$field] = NULL;
+                }
+                $values[] = ':' . $field;
+            }
+
+            $values = implode(', ', $values);
+
+            $query = "INSERT INTO listings ({$fields}) VALUES ({$values})";
+            //inspectAndDie($query);
+            $this->db->query($query, $newListingData);
+
+            redirect('\listings');
         }
     }
 }

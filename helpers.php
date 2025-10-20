@@ -83,7 +83,26 @@ function formatSalary($salary)
     return '$' . number_format(floatval($salary));
 }
 
+/**
+ * Limpar inputs que podem estar sujos com caracteres especias html/js
+ *
+ * @param string $dirty
+ * @return void
+ */
 function sanitize($dirty)
 {
     return filter_var($dirty, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+}
+
+
+/**
+ * Redirecionar para uma página
+ *
+ * @param  string $url
+ * @return void
+ */
+function redirect($url)
+{
+    header('Location: ' . $url);
+    exit;
 }

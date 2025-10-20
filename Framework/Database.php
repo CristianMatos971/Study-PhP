@@ -45,7 +45,7 @@ class Database
 
             //conectar os parametros à preparedStatements nomeados
             foreach ($params as $param => $value) {
-                $stmt->bindParam($param, $value);
+                $stmt->bindValue(':' . $param, $value);
             }
 
             $stmt->execute();
