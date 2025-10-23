@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\controllers\ErrorController;
 use Framework\Database;
 use Framework\Validation;
 
@@ -41,6 +42,7 @@ class ListingsController
     /**
      * Carregar a página com detalhes individuais de cada post/job listing
      *
+     * @param array params
      * @return void
      */
     public function show($params)
@@ -60,6 +62,11 @@ class ListingsController
     }
 
 
+    /**
+     * Criar um job listing no banco de dados
+     *
+     * @return void
+     */
     public function store()
     {
         $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
@@ -108,6 +115,28 @@ class ListingsController
             $this->db->query($query, $newListingData);
 
             redirect('\listings');
+        }
+    }
+
+    /**
+     * Deletar um job listing do banco de dados
+     * 
+     * @return void
+     */
+    public function destroy($params)
+    {
+        $id = $params['id'];
+
+        $params = ['id' => $id];
+
+        $listing = $this->db->query('SELECT * FROM listings WHERE id = :id', $params);
+
+        if (!$listing) {
+            ErrorController::notFound();
+            return;
+        } else {
+            $this->db->query('DELETE FROM listings WHERE id = :id', $params);
+            redirect('/listings');
         }
     }
 }

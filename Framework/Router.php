@@ -81,6 +81,10 @@ class Router
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
+        if ($requestMethod === 'POST' && isset($_POST['_method'])) {
+            $requestMethod = $_POST['_method'];
+        }
+
         foreach ($this->routes as $route) {
             $uriSegments = explode('/', trim($uri, '/'));
 
@@ -121,5 +125,6 @@ class Router
                 }
             }
         }
+        ErrorController::notFound();
     }
 }
