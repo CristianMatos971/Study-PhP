@@ -3,7 +3,10 @@
 $router->get('/', 'HomeController@index');
 $router->get('/listings', 'ListingsController@index');
 $router->get('/listings/create', 'ListingsController@create');
+$router->get('/listings/edit/{id}', 'ListingsController@edit');
 $router->get('/listings/{id}', 'ListingsController@show');
+
+$router->put('/listings/{id}', 'ListingsController@update');
 $router->post('/listings/create', 'ListingsController@store');
 $router->delete('listings/{id}', 'ListingsController@destroy');
 
