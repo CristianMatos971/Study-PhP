@@ -10,6 +10,11 @@ $router->put('/listings/{id}', 'ListingsController@update');
 $router->post('/listings/create', 'ListingsController@store');
 $router->delete('listings/{id}', 'ListingsController@destroy');
 
+$router->get('/auth/register', 'UserController@create');
+$router->get('/auth/login', 'UserController@login');
+$router->post('/auth/register', 'UserController@store');
+
+
 /* 
 $router->get('/', 'controllers/home.php');
 $router->get('/listings', 'controllers/listings/index.php');
