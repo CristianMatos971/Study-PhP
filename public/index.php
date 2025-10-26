@@ -1,9 +1,11 @@
 <?php
-session_start();
 require __DIR__ . '/../vendor/autoload.php';
 require '../helpers.php';
 
 use Framework\Router;
+use Framework\Session;
+
+Session::start();
 
 /* autoload manual comentado por que o projeto foi posteriormente configurado com composer para usar um autoloader já predefinido com composer install.
 spl_autoload_register(function ($class) {
