@@ -110,6 +110,11 @@ class UserController
         }
     }
 
+    /**
+     * Deslogar um usuário e destruir sessão
+     *
+     * @return void
+     */
     public function logout()
     {
         Session::clearAll();
@@ -117,5 +122,62 @@ class UserController
         setcookie(session_name(), '', time() - 86400, $params['path'], $params['domain']);
 
         redirect('/');
+    }
+
+    /**
+     * Autenticar/logar um usuário com email e senha
+     *
+     * @return void
+     */
+    public function authenticate()
+    {
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
+
+        $errors = [];
+
+
+        if (!Validation::email($email))
+            $errors['email'] = 'Email must be valid';
+
+        if (!Validation::string($password, 6, 50))
+            $errors['password'] = 'Password must have atleast 6 characters';
+
+        if (!empty($errors)) {
+            loadView('/users/login', [
+                'errors' => $errors,
+            ]);
+            return;
+        }
+
+        $user = $this->db->query('SELECT * FROM users WHERE email = :email', ['email' => $email])->fetch();
+
+        if (!$user) {
+            $errors['email'] = 'Incorrect credentials';
+            loadView('/users/login', [
+                'errors' => $errors,
+            ]);
+            return;
+        }
+
+        if (!password_verify($password, $user->password)) {
+            $errors['email'] = 'Incorrect credentials';
+            loadView('/users/login', [
+                'errors' => $errors,
+            ]);
+            return;
+        }
+
+        Session::set('user', [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'city' => $user->city,
+            'state' => $user->state,
+        ]);
+
+        redirect('/');
+
+        return;
     }
 }
