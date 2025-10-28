@@ -168,6 +168,8 @@ class UserController
             return;
         }
 
+
+        session_regenerate_id(true);
         Session::set('user', [
             'id' => $user->id,
             'name' => $user->name,
