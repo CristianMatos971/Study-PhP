@@ -74,4 +74,31 @@ class Session
         session_unset();
         session_destroy();
     }
+
+    /**
+     * Atribuir uma mensagem flash - temporária
+     *
+     * @param string $key
+     * @param string $message
+     * @return void
+     */
+    public static function setFlashMessage($key, $message)
+    {
+        self::set('self_' . $key, $message);
+    }
+
+
+    /**
+     * Atribuir uma mensagem flash - temporária
+     *
+     * @param string $key
+     * @param string $message
+     * @return string
+     */
+    public static function getFlashMessage($key, $default = null)
+    {
+        $message = self::get('self_' . $key, $default);
+        self::clear('self_' . $key);
+        return $message;
+    }
 }

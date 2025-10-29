@@ -5,7 +5,8 @@ namespace App\Controllers;
 use App\controllers\ErrorController;
 use Framework\Database;
 use Framework\Validation;
-
+use Framework\Authorization;
+use Framework\Session;
 
 class ListingsController
 {
@@ -24,7 +25,7 @@ class ListingsController
      */
     public function index()
     {
-        $listings = $this->db->query('SELECT * FROM listings')->fetchAll();
+        $listings = $this->db->query('SELECT * FROM listings ORDER BY created_at DESC')->fetchAll();
         loadView('listings/index', $listings);
     }
 
@@ -68,7 +69,7 @@ class ListingsController
         $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
         $newListingData = array_intersect_key($_POST, array_flip($allowedFields));
         //inspectAndDie($newListingData);
-        $newListingData['user_id'] = 1;
+        $newListingData['user_id'] = Session::get('user')['id'];
         $newListingData = array_map('sanitize', $newListingData);
 
         $requiredFields = ['title', 'description', 'city', 'state', 'email'];
@@ -77,7 +78,7 @@ class ListingsController
 
 
         foreach ($requiredFields as $field) {
-            if (empty($newListingData[$field]) || Validation::string($newListingData[$field])) {
+            if (empty($newListingData[$field]) || !Validation::string($newListingData[$field])) {
                 $errors[$field] = ucfirst($field) . ' is required';
             }
         }
@@ -110,7 +111,7 @@ class ListingsController
             //inspectAndDie($query);
             $this->db->query($query, $newListingData);
 
-            redirect('\listings');
+            redirect('/listings');
         }
     }
 
@@ -126,11 +127,16 @@ class ListingsController
         if (!$listing) {
             ErrorController::notFound();
             return;
+        }
+
+        if (!Authorization::isOwner($listing->id)) {
+            Session::setFlashMessage('error_message', "You are not authorized to delete this listing");
+            return redirect('/listings/' . $listing->id);
         } else {
             $this->db->query('DELETE FROM listings WHERE id = :id', $params);
         }
 
-        $_SESSION['success-message'] = "Listing[{$listing->title}] deleted sucessfully";
+        Session::setFlashMessage('success_message', "Listing [{$listing->title}] deleted successfully");
         redirect('/listings');
     }
 
@@ -149,6 +155,11 @@ class ListingsController
             return;
         }
 
+        if (!Authorization::isOwner($listing->id)) {
+            Session::setFlashMessage('error_message', 'You are not authorized to edit this listing');
+            return redirect('/listings/' . $listing->id);
+        }
+
         loadView('listings/edit', ['listing' => $listing]);
     }
 
@@ -159,6 +170,11 @@ class ListingsController
         if (!$listing) {
             ErrorController::notFound('Listing not found');
             return;
+        }
+
+        if (!Authorization::isOwner($listing->id)) {
+            Session::setFlashMessage('error_message', 'You are not authorized to edit this listing');
+            return redirect('/listings/' . $listing->id);
         }
 
         $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
@@ -194,7 +210,7 @@ class ListingsController
             $query = 'UPDATE listings SET ' . $values_str . ' WHERE id = :id';
 
             $this->db->query($query, $updateValues);
-            $_SESSION['success-message'] = 'Listing Updated Sucessfully';
+            Session::setFlashMessage('success_message', 'Listing updated successfully');
 
             redirect('/listings/' . $params['id']);
         }
